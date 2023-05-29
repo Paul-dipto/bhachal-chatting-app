@@ -41,3 +41,7 @@
    width: 48%;
    background-color: #5f34f5 !important;
 }
+
+.googlelogin {
+   cursor: pointer;
+}
