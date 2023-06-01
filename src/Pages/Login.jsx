@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import loginimg from "../assets/loginimg.webp";
 import logingoogle from "../assets/logingoogle.png";
 import Regiheadinglog from "../Components/Regiheadinglog";
@@ -16,6 +16,7 @@ let intialValues = {
    email: "",
    password: "",
    loading: false,
+   error: "",
 };
 
 const Login = () => {
@@ -31,11 +32,27 @@ const Login = () => {
    };
 
    let handleSubmit = () => {
-      let { email, fullname, password } = values;
+      let { email, password } = values;
+      if (!email) {
+         setValues({
+            ...values,
+            error: "Enter an Email",
+         });
+         return;
+      }
+
+      if (!password) {
+         setValues({
+            ...values,
+            error: "Enter an Password",
+         });
+         return;
+      }
       setValues({
          ...values,
          loading: true,
       });
+
       signInWithEmailAndPassword(auth, email, password).then((user) => {
          console.log(user);
          setValues({
@@ -79,6 +96,9 @@ const Login = () => {
                      label="Email-Adress"
                      variant="outlined"
                   />
+                  {values.error.includes("Email") && (
+                     <Alert severity="error">{values.error}</Alert>
+                  )}
                </div>
                <div className="reg-form">
                   <TextField
@@ -91,6 +111,9 @@ const Login = () => {
                      variant="outlined"
                      placeholder="Enter Your Password"
                   />
+                  {values.error.includes("password") && (
+                     <Alert severity="error">{values.error}</Alert>
+                  )}
                </div>
                {values.loading ? (
                   <LoadingButton loading variant="outlined">

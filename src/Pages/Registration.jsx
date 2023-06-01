@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import regiimg from "../assets/Registration-img.webp";
 import Regiheadinglog from "../Components/Regiheadinglog";
@@ -11,6 +11,7 @@ let intialValues = {
    fullname: "",
    password: "",
    loading: false,
+   error: "",
 };
 
 const Registration = () => {
@@ -29,10 +30,33 @@ const Registration = () => {
 
    let handleSubmit = () => {
       let { email, fullname, password } = values;
+      if (!email) {
+         setValues({
+            ...values,
+            error: "Enter an Email",
+         });
+         return;
+      }
+      if (!fullname) {
+         setValues({
+            ...values,
+            error: "Enter Full-Name",
+         });
+         return;
+      }
+      if (!password) {
+         setValues({
+            ...values,
+            error: "Enter a password",
+         });
+         return;
+      }
+
       setValues({
          ...values,
          loading: true,
       });
+
       createUserWithEmailAndPassword(auth, email, password).then((user) => {
          console.log(user);
          setValues({
@@ -64,6 +88,9 @@ const Registration = () => {
                      label="Email-Adress"
                      variant="outlined"
                   />
+                  {values.error.includes("Email") && (
+                     <Alert severity="error">{values.error}</Alert>
+                  )}
                </div>
                <div className="reg-form">
                   <TextField
@@ -74,6 +101,9 @@ const Registration = () => {
                      label="First-Name"
                      variant="outlined"
                   />
+                  {values.error.includes("Full-Name") && (
+                     <Alert severity="error">{values.error}</Alert>
+                  )}
                </div>
                <div className="reg-form">
                   <TextField
@@ -85,6 +115,9 @@ const Registration = () => {
                      label="Password"
                      variant="outlined"
                   />
+                  {values.error.includes("password") && (
+                     <Alert severity="error">{values.error}</Alert>
+                  )}
                </div>
                {values.loading ? (
                   <LoadingButton loading variant="outlined">
