@@ -3,8 +3,12 @@ import { Grid, TextField, Button, Alert } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import regiimg from "../assets/Registration-img.webp";
 import Regiheadinglog from "../Components/Regiheadinglog";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Navigate, useNavigate } from "react-router-dom";
+import {
+   getAuth,
+   createUserWithEmailAndPassword,
+   sendEmailVerification,
+} from "firebase/auth";
+import { useNavigate, Link } from "react-router-dom";
 
 let intialValues = {
    email: "",
@@ -29,6 +33,7 @@ const Registration = () => {
    };
 
    let handleSubmit = () => {
+      var pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
       let { email, fullname, password } = values;
       if (!email) {
          setValues({
@@ -44,10 +49,10 @@ const Registration = () => {
          });
          return;
       }
-      if (!password) {
+      if (!password || !pattern.test(password)) {
          setValues({
             ...values,
-            error: "Enter a password",
+            error: "Enter a password including uppercase lowercase symbols",
          });
          return;
       }
@@ -58,7 +63,9 @@ const Registration = () => {
       });
 
       createUserWithEmailAndPassword(auth, email, password).then((user) => {
-         console.log(user);
+         sendEmailVerification(auth.currentUser).then(() => {
+            console.log("email-send");
+         });
          setValues({
             ...values,
             email: "",
@@ -128,6 +135,13 @@ const Registration = () => {
                      Sign Up
                   </Button>
                )}
+               <Alert severity="error" style={{ marginBottom: "20px" }}>
+                  Forgot Password
+                  <strong>
+                     {" "}
+                     <Link to="/ForgotPassword">Click Here</Link>
+                  </strong>
+               </Alert>
             </div>
          </Grid>
          <Grid item xs={6}>
