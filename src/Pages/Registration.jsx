@@ -49,10 +49,10 @@ const Registration = () => {
          });
          return;
       }
-      if (!password || !pattern.test(password)) {
+      if (!password) {
          setValues({
             ...values,
-            error: "Enter a password including uppercase lowercase symbols",
+            error: "Enter a password",
          });
          return;
       }

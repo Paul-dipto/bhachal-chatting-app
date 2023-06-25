@@ -29,7 +29,7 @@ const Login = () => {
    let navigate = useNavigate();
    let [values, setValues] = useState(intialValues);
    let [error, setError] = useState("");
-   const notify = () => toast("Wow so easy!");
+   const notify = () => toast("");
 
    let handleValues = (e) => {
       setValues({
@@ -71,7 +71,11 @@ const Login = () => {
                password: "",
                loading: false,
             });
-            navigate("/Home");
+            if (!user.user.emailVerified) {
+               toast("please verify email to login");
+            } else {
+               navigate("/bachal/Home");
+            }
          })
          .catch((error) => {
             const errorCode = error.code;
