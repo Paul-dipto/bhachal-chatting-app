@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { Group } from "../Components/Group";
 
 const Home = () => {
    const auth = getAuth();
@@ -20,7 +21,7 @@ const Home = () => {
       <>
          <Grid container spacing={2}>
             <Grid xs={4}>
-               <h1>xs=4</h1>
+               <Group />
             </Grid>
             <Grid xs={4}>
                <h1>xs=4</h1>

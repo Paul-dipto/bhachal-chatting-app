@@ -12,7 +12,7 @@ const RootLayout = () => {
    const location = useLocation();
    return (
       <>
-         <Grid container spacing={2}>
+         <Grid container spacing={4}>
             <Grid item xs={1}>
                <div className="navbar">
                   <div className="nav-container">
