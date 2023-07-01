@@ -1,10 +1,16 @@
 import React from "react";
 import profile from "../assets/profile.webp";
 import { Button } from "@mui/material";
-const Friends = () => {
+
+export const MyGroups = () => {
    return (
       <div className="box">
-         <h3 className="create">Friends </h3>
+         <h3 className="create">
+            My Group{" "}
+            <Button variant="contained" size="small">
+               Create Group
+            </Button>
+         </h3>
          <div className="list">
             <div className="img">
                <picture>
@@ -104,5 +110,3 @@ const Friends = () => {
       </div>
    );
 };
-
-export default Friends;

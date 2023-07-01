@@ -4,6 +4,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { Group } from "../Components/Group";
+import FriendRequest from "../Components/FriendRequest";
+import Friends from "../Components/Friends";
+import { MyGroups } from "../Components/MyGroups";
+import { UserList } from "../Components/UserList";
+import { Block } from "../Components/Block";
 
 const Home = () => {
    const auth = getAuth();
@@ -22,12 +27,15 @@ const Home = () => {
          <Grid container spacing={2}>
             <Grid xs={4}>
                <Group />
+               <FriendRequest />
             </Grid>
             <Grid xs={4}>
-               <h1>xs=4</h1>
+               <Friends />
+               <MyGroups />
             </Grid>
             <Grid xs={4}>
-               <h1>xs=8</h1>
+               <UserList />
+               <Block />
             </Grid>
          </Grid>
          {/* <Button onClick={handleLogout} variant="contained">

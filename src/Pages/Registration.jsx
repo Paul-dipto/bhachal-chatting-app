@@ -7,8 +7,10 @@ import {
    getAuth,
    createUserWithEmailAndPassword,
    sendEmailVerification,
+   updateProfile,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
+import { getDatabase, ref, set, push } from "firebase/database";
 
 let intialValues = {
    email: "",
@@ -20,6 +22,7 @@ let intialValues = {
 
 const Registration = () => {
    const auth = getAuth();
+   const db = getDatabase();
 
    let navigate = useNavigate();
 
@@ -63,9 +66,25 @@ const Registration = () => {
       });
 
       createUserWithEmailAndPassword(auth, email, password).then((user) => {
-         sendEmailVerification(auth.currentUser).then(() => {
-            console.log("email-send");
-         });
+         updateProfile(auth.currentUser, {
+            displayName: values.fullname,
+            photoURL: "https://i.ibb.co/W09gQtH/avatar.jpg",
+         })
+            .then(() => {
+               sendEmailVerification(auth.currentUser).then(() => {
+                  console.log("email-send");
+                  console.log(user);
+                  set(ref(db, "users/" + user.user.uid), {
+                     username: values.fullname,
+                     email: values.email,
+                     profile_picture: user.user.photoURL,
+                  });
+               });
+            })
+            .catch((error) => {
+               // An error occurred
+               // ...
+            });
          setValues({
             ...values,
             email: "",
@@ -103,6 +122,7 @@ const Registration = () => {
                   <TextField
                      onChange={handleValues}
                      value={values.fullname}
+                     type="text"
                      name="fullname"
                      id="outlined-basic"
                      label="First-Name"
