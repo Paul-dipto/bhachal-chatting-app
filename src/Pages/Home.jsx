@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +9,23 @@ import Friends from "../Components/Friends";
 import { MyGroups } from "../Components/MyGroups";
 import { UserList } from "../Components/UserList";
 import { Block } from "../Components/Block";
+import { useSelector } from "react-redux";
 
 const Home = () => {
    const auth = getAuth();
    let navigate = useNavigate();
+   let loginUser = useSelector((state) => state.loggedUser.loginUser);
+
+   useEffect(() => {
+      if (loginUser == null) {
+         navigate("/login");
+      }
+   }, []);
+
    let handleLogout = () => {
       signOut(auth)
          .then(() => {
+            localStorage.removeItem("user");
             navigate("/login");
          })
          .catch((error) => {
@@ -38,9 +48,9 @@ const Home = () => {
                <Block />
             </Grid>
          </Grid>
-         {/* <Button onClick={handleLogout} variant="contained">
+         <Button onClick={handleLogout} variant="contained">
             log out
-         </Button> */}
+         </Button>
       </>
    );
 };

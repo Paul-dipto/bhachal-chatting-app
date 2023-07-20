@@ -72,8 +72,6 @@ const Registration = () => {
          })
             .then(() => {
                sendEmailVerification(auth.currentUser).then(() => {
-                  console.log("email-send");
-                  console.log(user);
                   set(ref(db, "users/" + user.user.uid), {
                      username: values.fullname,
                      email: values.email,

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, TextField, Button, Alert } from "@mui/material";
 import loginimg from "../assets/loginimg.webp";
 import logingoogle from "../assets/logingoogle.png";
 import Regiheadinglog from "../Components/Regiheadinglog";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import {
    getAuth,
    signInWithEmailAndPassword,
@@ -13,6 +13,8 @@ import {
    signInWithPopup,
 } from "firebase/auth";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { userdata } from "../slices/users/userSlices";
 
 let intialValues = {
    email: "",
@@ -30,6 +32,7 @@ const Login = () => {
    let [values, setValues] = useState(intialValues);
    let [error, setError] = useState("");
    const notify = () => toast("");
+   let dispatch = useDispatch();
 
    let handleValues = (e) => {
       setValues({
@@ -64,7 +67,6 @@ const Login = () => {
 
       signInWithEmailAndPassword(auth, email, password)
          .then((user) => {
-            console.log(user);
             setValues({
                ...values,
                email: "",
@@ -74,13 +76,14 @@ const Login = () => {
             if (!user.user.emailVerified) {
                toast("please verify email to login");
             } else {
+               dispatch(userdata(user.user));
+               localStorage.setItem("user", JSON.stringify(user.user));
                navigate("/bachal/Home");
             }
          })
          .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode);
             setError(errorCode);
             if (errorCode === "auth/user-not-found") {
                setValues({
@@ -105,9 +108,7 @@ const Login = () => {
    };
 
    let handleGoogle = () => {
-      signInWithPopup(auth, provider).then((result) => {
-         console.log(result);
-      });
+      signInWithPopup(auth, provider).then((result) => {});
    };
 
    return (

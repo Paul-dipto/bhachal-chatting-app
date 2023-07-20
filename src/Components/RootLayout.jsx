@@ -7,9 +7,11 @@ import { LuMessageSquare } from "react-icons/lu";
 import { GrNotification, GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const RootLayout = () => {
    const location = useLocation();
+   let userdata = useSelector((state) => state.loggedUser.loginUser);
    return (
       <>
          <Grid container spacing={4}>
@@ -19,6 +21,7 @@ const RootLayout = () => {
                      <picture>
                         <img src={profile} />
                      </picture>
+                     <h3>{userdata.displayName}</h3>
                      <ul>
                         <li>
                            <Link
